@@ -1,16 +1,38 @@
-package com.example.demo.service.impl;
+@Service
+@RequiredArgsConstructor
+public class ComplianceScoreServiceImpl implements ComplianceScoreService {
 
-import com.example.demo.util.ComplianceScoringEngine;
+    private final VendorRepository vendorRepository;
+    private final VendorDocumentRepository vendorDocumentRepository;
+    private final ComplianceScoreRepository complianceScoreRepository;
 
-public class ComplianceScoreServiceImpl {
+    @Override
+    public ComplianceScore evaluateVendor(Long vendorId) {
 
-    private final ComplianceScoringEngine engine;
+        Vendor vendor = vendorRepository.findById(vendorId)
+                .orElseThrow(() -> new ResourceNotFoundException("Vendor not found"));
 
-    public ComplianceScoreServiceImpl() {
-        this.engine = new ComplianceScoringEngine();
+        List<VendorDocument> docs = vendorDocumentRepository.findByVendorId(vendorId);
+
+        int score = (int) docs.stream()
+                .filter(VendorDocument::getIsValid)
+                .count() * 10;
+
+        ComplianceScore cs = new ComplianceScore();
+        cs.setVendor(vendor);
+        cs.setScore(score);
+
+        return complianceScoreRepository.save(cs);
     }
 
-    public int getComplianceScore(int value) {
-        return engine.calculateScore(value);
+    @Override
+    public ComplianceScore getScore(Long vendorId) {
+        return complianceScoreRepository.findByVendorId(vendorId)
+                .orElseThrow(() -> new ResourceNotFoundException("Score not found"));
+    }
+
+    @Override
+    public List<ComplianceScore> getAllScores() {
+        return complianceScoreRepository.findAll();
     }
 }
