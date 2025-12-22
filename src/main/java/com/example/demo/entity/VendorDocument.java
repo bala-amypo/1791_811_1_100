@@ -1,13 +1,29 @@
-package com.example.demo.service;
+package com.example.demo.entity;
 
-import com.example.demo.entity.VendorDocument;
-import java.util.List;
+import jakarta.persistence.*;
+import lombok.*;
 
-public interface VendorDocumentService {
+import java.time.LocalDate;
 
-    VendorDocument uploadDocument(Long vendorId, Long typeId, VendorDocument document);
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class VendorDocument {
 
-    List<VendorDocument> getDocumentsForVendor(Long vendorId);
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    VendorDocument getDocument(Long id);
+    private String fileUrl;
+
+    private LocalDate expiryDate;
+
+    private Boolean isValid;
+
+    @ManyToOne
+    private Vendor vendor;
+
+    @ManyToOne
+    private DocumentType documentType;
 }

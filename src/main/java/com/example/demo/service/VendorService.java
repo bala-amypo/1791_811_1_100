@@ -1,10 +1,11 @@
-package com.example.demo.service;
+package com.example.demo.repository;
 
-import com.example.demo.entity.Vendor;
+import com.example.demo.entity.VendorDocument;
+import org.springframework.data.jpa.repository.JpaRepository;
+
 import java.util.List;
 
-public interface VendorService {
-    Vendor createVendor(Vendor vendor);
-    Vendor getVendor(Long id);
-    List<Vendor> getAllVendors();
+public interface VendorDocumentRepository extends JpaRepository<VendorDocument, Long> {
+
+    List<VendorDocument> findByVendorId(Long vendorId);
 }
