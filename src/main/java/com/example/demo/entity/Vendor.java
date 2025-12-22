@@ -1,44 +1,42 @@
-package com.example.demo.controller;
+package com.example.demo.entity;
 
-import com.example.demo.entity.Vendor;
-import com.example.demo.service.ComplianceScoreService;
-import com.example.demo.service.VendorService;
-import jakarta.validation.constraints.Positive;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
-import java.util.List;
+@Entity
+@Table(name = "vendors")
+public class Vendor {
 
-@RestController
-@RequestMapping("/vendors")
-public class VendorController {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    private static final Logger logger = LoggerFactory.getLogger(VendorController.class);
+    @NotBlank
+    @Size(max = 100)
+    private String name;
 
-    private final VendorService vendorService;
-    private final ComplianceScoreService complianceScoreService;
+    @Size(max = 255)
+    private String description;
 
-    public VendorController(VendorService vendorService,
-                            ComplianceScoreService complianceScoreService) {
-        this.vendorService = vendorService;
-        this.complianceScoreService = complianceScoreService;
+    @Size(max = 100)
+    private String email;
+
+    public Vendor() {}
+
+    public Vendor(String name, String description, String email) {
+        this.name = name;
+        this.description = description;
+        this.email = email;
     }
 
-    @GetMapping
-    public ResponseEntity<List<Vendor>> getAllVendors() {
-        logger.info("Fetching all vendors");
-        List<Vendor> vendors = vendorService.getAllVendors();
-        if (vendors.isEmpty()) return ResponseEntity.noContent().build();
-        return ResponseEntity.ok(vendors);
-    }
-
-    @GetMapping("/{id}/score")
-    public ResponseEntity<Integer> getVendorScore(@PathVariable @Positive Long id) {
-        logger.info("Fetching compliance score for vendor ID: {}", id);
-        Integer score = complianceScoreService.getScore(id);
-        if (score == null) return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(score);
-    }
+    // Getters and Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 }
