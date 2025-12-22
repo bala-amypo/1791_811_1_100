@@ -9,23 +9,16 @@ public class ComplianceScore {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String vendorName;
     private int score;
 
-    @ManyToOne
-    private Vendor vendor;
+    // Getters and Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public ComplianceScore() {}
+    public String getVendorName() { return vendorName; }
+    public void setVendorName(String vendorName) { this.vendorName = vendorName; }
 
-    public ComplianceScore(int score, Vendor vendor) {
-        this.score = score;
-        this.vendor = vendor;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public Vendor getVendor() {
-        return vendor;
-    }
+    public int getScore() { return score; }
+    public void setScore(int score) { this.score = score; }
 }
