@@ -1,14 +1,19 @@
-package com.example.demo.model;
+package com.example.demo.entity;
 
+import jakarta.persistence.*;
+
+@Entity
 public class Vendor {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
 
     public Vendor() {}
 
-    public Vendor(Long id, String name) {
-        this.id = id;
+    public Vendor(String name) {
         this.name = name;
     }
 
