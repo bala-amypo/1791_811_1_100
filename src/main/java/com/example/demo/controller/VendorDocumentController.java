@@ -13,25 +13,39 @@ public class VendorDocumentController {
 
     private final VendorDocumentService vendorDocumentService;
 
+    // Constructor Injection (Best Practice)
     public VendorDocumentController(VendorDocumentService vendorDocumentService) {
         this.vendorDocumentService = vendorDocumentService;
     }
 
+    // Upload a document for a vendor
     @PostMapping("/upload")
     public ResponseEntity<VendorDocument> uploadDocument(
-            @RequestParam Long vendorId,
-            @RequestParam Long typeId,
+            @RequestParam("vendorId") Long vendorId,
+            @RequestParam("typeId") Long typeId,
             @RequestBody VendorDocument document) {
-        return ResponseEntity.ok(vendorDocumentService.uploadDocument(vendorId, typeId, document));
+
+        VendorDocument savedDocument =
+                vendorDocumentService.uploadDocument(vendorId, typeId, document);
+
+        return ResponseEntity.ok(savedDocument);
     }
 
+    // Get all documents for a vendor
     @GetMapping("/vendor/{vendorId}")
-    public ResponseEntity<List<VendorDocument>> getVendorDocuments(@PathVariable Long vendorId) {
-        return ResponseEntity.ok(vendorDocumentService.getDocumentsForVendor(vendorId));
+    public ResponseEntity<List<VendorDocument>> getDocumentsByVendorId(
+            @PathVariable Long vendorId) {
+
+        List<VendorDocument> documents =
+                vendorDocumentService.getDocumentsForVendor(vendorId);
+
+        return ResponseEntity.ok(documents);
     }
 
+    // Get a document by ID
     @GetMapping("/{id}")
-    public ResponseEntity<VendorDocument> getDocument(@PathVariable Long id) {
-        return ResponseEntity.ok(vendorDocumentService.getDocument(id));
-    }
-}
+    public ResponseEntity<VendorDocument> getDocumentById(
+            @PathVariable Long id) {
+
+        VendorDocument document = vendorDocumentService.getDocument(id);
+        return ResponseEntity.ok(document);

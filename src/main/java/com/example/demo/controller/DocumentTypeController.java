@@ -13,22 +13,33 @@ public class DocumentTypeController {
 
     private final DocumentTypeService documentTypeService;
 
+    // Constructor Injection (Best Practice)
     public DocumentTypeController(DocumentTypeService documentTypeService) {
         this.documentTypeService = documentTypeService;
     }
 
+    // Create a new document type
     @PostMapping
-    public ResponseEntity<DocumentType> createDocumentType(@RequestBody DocumentType type) {
-        return ResponseEntity.ok(documentTypeService.createDocumentType(type));
+    public ResponseEntity<DocumentType> createDocumentType(
+            @RequestBody DocumentType documentType) {
+
+        DocumentType savedType = documentTypeService.createDocumentType(documentType);
+        return ResponseEntity.ok(savedType);
     }
 
+    // Get all document types
     @GetMapping
     public ResponseEntity<List<DocumentType>> getAllDocumentTypes() {
-        return ResponseEntity.ok(documentTypeService.getAllDocumentTypes());
+        List<DocumentType> documentTypes = documentTypeService.getAllDocumentTypes();
+        return ResponseEntity.ok(documentTypes);
     }
 
+    // Get document type by ID
     @GetMapping("/{id}")
-    public ResponseEntity<DocumentType> getDocumentType(@PathVariable Long id) {
-        return ResponseEntity.ok(documentTypeService.getDocumentType(id));
+    public ResponseEntity<DocumentType> getDocumentTypeById(
+            @PathVariable Long id) {
+
+        DocumentType documentType = documentTypeService.getDocumentType(id);
+        return ResponseEntity.ok(documentType);
     }
 }

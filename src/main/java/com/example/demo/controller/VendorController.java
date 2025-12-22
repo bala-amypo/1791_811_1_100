@@ -13,22 +13,33 @@ public class VendorController {
 
     private final VendorService vendorService;
 
+    // Constructor Injection (Recommended)
     public VendorController(VendorService vendorService) {
         this.vendorService = vendorService;
     }
 
+    // Create a new vendor
     @PostMapping
-    public ResponseEntity<Vendor> createVendor(@RequestBody Vendor vendor) {
-        return ResponseEntity.ok(vendorService.createVendor(vendor));
+    public ResponseEntity<Vendor> createVendor(
+            @RequestBody Vendor vendor) {
+
+        Vendor savedVendor = vendorService.createVendor(vendor);
+        return ResponseEntity.ok(savedVendor);
     }
 
+    // Get all vendors
     @GetMapping
     public ResponseEntity<List<Vendor>> getAllVendors() {
-        return ResponseEntity.ok(vendorService.getAllVendors());
+        List<Vendor> vendors = vendorService.getAllVendors();
+        return ResponseEntity.ok(vendors);
     }
 
+    // Get vendor by ID
     @GetMapping("/{id}")
-    public ResponseEntity<Vendor> getVendor(@PathVariable Long id) {
-        return ResponseEntity.ok(vendorService.getVendor(id));
+    public ResponseEntity<Vendor> getVendorById(
+            @PathVariable Long id) {
+
+        Vendor vendor = vendorService.getVendor(id);
+        return ResponseEntity.ok(vendor);
     }
 }
