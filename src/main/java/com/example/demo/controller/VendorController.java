@@ -1,22 +1,30 @@
 package com.example.demo.controller;
 
+import com.example.demo.model.Vendor;
 import com.example.demo.service.ComplianceScoreService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.demo.service.VendorService;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/vendors")
 public class VendorController {
 
+    private final VendorService vendorService;
     private final ComplianceScoreService complianceScoreService;
 
-    public VendorController(ComplianceScoreService complianceScoreService) {
+    public VendorController(VendorService vendorService,
+                            ComplianceScoreService complianceScoreService) {
+        this.vendorService = vendorService;
         this.complianceScoreService = complianceScoreService;
     }
 
-    @GetMapping("/compliance-score")
-    public String getScore(@RequestParam Long vendorId) {
-        int score = complianceScoreService.calculateScore(vendorId);
-        return "Compliance Score = " + score;
+    @GetMapping("/{id}")
+    public Vendor getVendor(@PathVariable Long id) {
+        return vendorService.getVendor(id);
+    }
+
+    @GetMapping("/{id}/score")
+    public int getComplianceScore(@PathVariable Long id) {
+        return complianceScoreService.calculateScore(id);
     }
 }

@@ -8,6 +8,6 @@ public class ComplianceScoreServiceImpl implements ComplianceScoreService {
 
     @Override
     public int calculateScore(Long vendorId) {
-        return 100; // simple fixed score
+        return 100;
     }
 }

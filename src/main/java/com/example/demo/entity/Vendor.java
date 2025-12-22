@@ -1,30 +1,40 @@
-package com.example.demo.entity;
+package com.example.demo.model;
 
 public class Vendor {
 
     private Long id;
-    private String vendorName;
+    private String name;
+    private boolean compliant;
 
     public Vendor() {}
 
-    public Vendor(Long id, String vendorName) {
+    public Vendor(Long id, String name, boolean compliant) {
         this.id = id;
-        this.vendorName = vendorName;
+        this.name = name;
+        this.compliant = compliant;
     }
 
     public Long getId() {
         return id;
     }
 
-    public String getVendorName() {
-        return vendorName;
-    }
-
     public void setId(Long id) {
         this.id = id;
     }
 
-    public void setVendorName(String vendorName) {
-        this.vendorName = vendorName;
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public boolean isCompliant() {
+        return compliant;
+    }
+
+    public void setCompliant(boolean compliant) {
+        this.compliant = compliant;
     }
 }

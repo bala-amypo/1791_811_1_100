@@ -1,7 +1,8 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.Vendor;
+import com.example.demo.model.Vendor;
 
 public interface VendorService {
-    Vendor getVendorById(Long id);
+
+    Vendor getVendor(Long id);
 }
