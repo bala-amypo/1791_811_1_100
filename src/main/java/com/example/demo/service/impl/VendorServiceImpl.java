@@ -6,18 +6,34 @@ import com.example.demo.service.VendorService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class VendorServiceImpl implements VendorService {
 
-    private final VendorRepository repository;
+    private final VendorRepository vendorRepository;
 
-    public VendorServiceImpl(VendorRepository repository) {
-        this.repository = repository;
+    public VendorServiceImpl(VendorRepository vendorRepository) {
+        this.vendorRepository = vendorRepository;
     }
 
     @Override
     public List<Vendor> getAllVendors() {
-        return repository.findAll();
+        return vendorRepository.findAll();
+    }
+
+    @Override
+    public Optional<Vendor> getVendorById(Long id) {
+        return vendorRepository.findById(id);
+    }
+
+    @Override
+    public Vendor saveVendor(Vendor vendor) {
+        return vendorRepository.save(vendor);
+    }
+
+    @Override
+    public void deleteVendor(Long id) {
+        vendorRepository.deleteById(id);
     }
 }

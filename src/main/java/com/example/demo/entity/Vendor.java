@@ -1,27 +1,44 @@
-package com.example.demo.entity;
+package com.example.demo.controller;
 
-import jakarta.persistence.*;
+import com.example.demo.entity.Vendor;
+import com.example.demo.service.ComplianceScoreService;
+import com.example.demo.service.VendorService;
+import jakarta.validation.constraints.Positive;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-@Entity
-public class Vendor {
+import java.util.List;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@RestController
+@RequestMapping("/vendors")
+public class VendorController {
 
-    private String name;
+    private static final Logger logger = LoggerFactory.getLogger(VendorController.class);
 
-    public Vendor() {}
+    private final VendorService vendorService;
+    private final ComplianceScoreService complianceScoreService;
 
-    public Vendor(String name) {
-        this.name = name;
+    public VendorController(VendorService vendorService,
+                            ComplianceScoreService complianceScoreService) {
+        this.vendorService = vendorService;
+        this.complianceScoreService = complianceScoreService;
     }
 
-    public Long getId() {
-        return id;
+    @GetMapping
+    public ResponseEntity<List<Vendor>> getAllVendors() {
+        logger.info("Fetching all vendors");
+        List<Vendor> vendors = vendorService.getAllVendors();
+        if (vendors.isEmpty()) return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(vendors);
     }
 
-    public String getName() {
-        return name;
+    @GetMapping("/{id}/score")
+    public ResponseEntity<Integer> getVendorScore(@PathVariable @Positive Long id) {
+        logger.info("Fetching compliance score for vendor ID: {}", id);
+        Integer score = complianceScoreService.getScore(id);
+        if (score == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(score);
     }
 }
