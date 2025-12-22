@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.Vendor;
+import com.example.demo.entity.Vendor;
 import com.example.demo.service.ComplianceScoreService;
 import com.example.demo.service.VendorService;
 import org.springframework.web.bind.annotation.*;
@@ -21,12 +21,12 @@ public class VendorController {
     }
 
     @GetMapping
-    public List<Vendor> getVendors() {
+    public List<Vendor> getAll() {
         return vendorService.getAllVendors();
     }
 
     @GetMapping("/{id}/score")
-    public int getScore(@PathVariable Long id) {
-        return complianceScoreService.calculateScore(id);
+    public int score(@PathVariable Long id) {
+        return complianceScoreService.getScore(id);
     }
 }

@@ -1,12 +1,7 @@
 package com.example.demo.repository;
 
 import com.example.demo.entity.Vendor;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-@Repository
-public class VendorRepository {
-
-    public Vendor findById(Long id) {
-        return new Vendor(id, "Demo Vendor");
-    }
+public interface VendorRepository extends JpaRepository<Vendor, Long> {
 }
