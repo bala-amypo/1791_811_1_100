@@ -5,6 +5,8 @@ import com.example.demo.service.ComplianceScoreService;
 import com.example.demo.service.VendorService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/vendors")
 public class VendorController {
@@ -18,13 +20,13 @@ public class VendorController {
         this.complianceScoreService = complianceScoreService;
     }
 
-    @GetMapping("/{id}")
-    public Vendor getVendor(@PathVariable Long id) {
-        return vendorService.getVendor(id);
+    @GetMapping
+    public List<Vendor> getVendors() {
+        return vendorService.getAllVendors();
     }
 
     @GetMapping("/{id}/score")
-    public int getComplianceScore(@PathVariable Long id) {
+    public int getScore(@PathVariable Long id) {
         return complianceScoreService.calculateScore(id);
     }
 }
