@@ -1,48 +1,30 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.*;
-import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
-
-@Entity
-@Table(name = "vendors", uniqueConstraints = @UniqueConstraint(columnNames = "vendorName"))
 public class Vendor {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(nullable = false, unique = true)
     private String vendorName;
-
-    private String email;
-    private String phone;
-    private String industry;
-
-    private LocalDateTime createdAt;
-
-    @ManyToMany
-    @JoinTable(
-        name = "vendor_document_types",
-        joinColumns = @JoinColumn(name = "vendor_id"),
-        inverseJoinColumns = @JoinColumn(name = "document_type_id")
-    )
-    private Set<DocumentType> supportedDocumentTypes = new HashSet<>();
 
     public Vendor() {}
 
-    public Vendor(String vendorName, String email, String phone, String industry) {
+    public Vendor(Long id, String vendorName) {
+        this.id = id;
         this.vendorName = vendorName;
-        this.email = email;
-        this.phone = phone;
-        this.industry = industry;
     }
 
-    @PrePersist
-    void onCreate() {
-        this.createdAt = LocalDateTime.now();
+    public Long getId() {
+        return id;
     }
 
-    // getters & setters
+    public String getVendorName() {
+        return vendorName;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setVendorName(String vendorName) {
+        this.vendorName = vendorName;
+    }
 }

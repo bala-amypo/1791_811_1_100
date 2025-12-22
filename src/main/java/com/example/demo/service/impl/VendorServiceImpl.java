@@ -1,37 +1,21 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.Vendor;
-import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.VendorRepository;
 import com.example.demo.service.VendorService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
-@RequiredArgsConstructor
 public class VendorServiceImpl implements VendorService {
 
     private final VendorRepository vendorRepository;
 
-    @Override
-    public Vendor createVendor(Vendor vendor) {
-        vendorRepository.findByVendorName(vendor.getVendorName())
-                .ifPresent(v -> {
-                    throw new RuntimeException("Vendor name already exists");
-                });
-        return vendorRepository.save(vendor);
+    public VendorServiceImpl(VendorRepository vendorRepository) {
+        this.vendorRepository = vendorRepository;
     }
 
     @Override
-    public Vendor getVendor(Long id) {
-        return vendorRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Vendor not found"));
-    }
-
-    @Override
-    public List<Vendor> getAllVendors() {
-        return vendorRepository.findAll();
+    public Vendor getVendorById(Long id) {
+        return vendorRepository.findById(id);
     }
 }

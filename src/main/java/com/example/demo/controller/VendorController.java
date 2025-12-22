@@ -1,45 +1,22 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.Vendor;
-import com.example.demo.service.VendorService;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import com.example.demo.service.ComplianceScoreService;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/vendors")
 public class VendorController {
 
-    private final VendorService vendorService;
+    private final ComplianceScoreService complianceScoreService;
 
-    // Constructor Injection (Recommended)
-    public VendorController(VendorService vendorService) {
-        this.vendorService = vendorService;
+    public VendorController(ComplianceScoreService complianceScoreService) {
+        this.complianceScoreService = complianceScoreService;
     }
 
-    // Create a new vendor
-    @PostMapping
-    public ResponseEntity<Vendor> createVendor(
-            @RequestBody Vendor vendor) {
-
-        Vendor savedVendor = vendorService.createVendor(vendor);
-        return ResponseEntity.ok(savedVendor);
-    }
-
-    // Get all vendors
-    @GetMapping
-    public ResponseEntity<List<Vendor>> getAllVendors() {
-        List<Vendor> vendors = vendorService.getAllVendors();
-        return ResponseEntity.ok(vendors);
-    }
-
-    // Get vendor by ID
-    @GetMapping("/{id}")
-    public ResponseEntity<Vendor> getVendorById(
-            @PathVariable Long id) {
-
-        Vendor vendor = vendorService.getVendor(id);
-        return ResponseEntity.ok(vendor);
+    @GetMapping("/compliance-score")
+    public String getScore(@RequestParam Long vendorId) {
+        int score = complianceScoreService.calculateScore(vendorId);
+        return "Compliance Score = " + score;
     }
 }
