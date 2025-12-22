@@ -1,44 +1,13 @@
-package com.example.demo.entity;
+package com.example.demo.service;
 
-import jakarta.persistence.*;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import com.example.demo.entity.VendorDocument;
+import java.util.List;
 
-@Entity
-@Table(name = "vendor_documents")
-public class VendorDocument {
+public interface VendorDocumentService {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    VendorDocument uploadDocument(Long vendorId, Long typeId, VendorDocument document);
 
-    @ManyToOne(optional = false)
-    private Vendor vendor;
+    List<VendorDocument> getDocumentsForVendor(Long vendorId);
 
-    @ManyToOne(optional = false)
-    private DocumentType documentType;
-
-    @Column(nullable = false)
-    private String fileUrl;
-
-    private LocalDate expiryDate;
-    private Boolean isValid;
-    private LocalDateTime uploadedAt;
-
-    public VendorDocument() {}
-
-    public VendorDocument(Vendor vendor, DocumentType documentType, String fileUrl, LocalDate expiryDate) {
-        this.vendor = vendor;
-        this.documentType = documentType;
-        this.fileUrl = fileUrl;
-        this.expiryDate = expiryDate;
-    }
-
-    @PrePersist
-    void onUpload() {
-        this.uploadedAt = LocalDateTime.now();
-        this.isValid = (expiryDate == null || expiryDate.isAfter(LocalDate.now()));
-    }
-
-    // getters & setters
+    VendorDocument getDocument(Long id);
 }
