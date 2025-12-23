@@ -1,6 +1,6 @@
 package com.example.demo.serviceimpl;
 
-import com.example.demo.model.Vendor;
+import com.example.demo.entity.Vendor;
 import com.example.demo.repository.VendorRepository;
 import com.example.demo.service.VendorService;
 import org.springframework.stereotype.Service;
@@ -10,40 +10,30 @@ import java.util.List;
 @Service
 public class VendorServiceImpl implements VendorService {
 
-    private final VendorRepository vendorRepository;
+    private final VendorRepository repository;
 
-    public VendorServiceImpl(VendorRepository vendorRepository) {
-        this.vendorRepository = vendorRepository;
+    public VendorServiceImpl(VendorRepository repository) {
+        this.repository = repository;
     }
 
-    @Override
-    public Vendor createVendor(Vendor vendor) {
-        return vendorRepository.save(vendor);
+    public Vendor save(Vendor vendor) {
+        return repository.save(vendor);
     }
 
-    @Override
-    public Vendor getVendorById(Long id) {
-        return vendorRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Vendor not found"));
+    public Vendor getById(Long id) {
+        return repository.findById(id).orElse(null);
     }
 
-    @Override
-    public List<Vendor> getAllVendors() {
-        return vendorRepository.findAll();
+    public List<Vendor> getAll() {
+        return repository.findAll();
     }
 
-    @Override
-    public Vendor updateVendor(Long id, Vendor vendor) {
-        Vendor existing = getVendorById(id);
-        existing.setVendorName(vendor.getVendorName());
-        existing.setEmail(vendor.getEmail());
-        existing.setPhone(vendor.getPhone());
-        existing.setIndustry(vendor.getIndustry());
-        return vendorRepository.save(existing);
+    public Vendor update(Long id, Vendor vendor) {
+        vendor.setId(id);
+        return repository.save(vendor);
     }
 
-    @Override
-    public void deleteVendor(Long id) {
-        vendorRepository.deleteById(id);
+    public void delete(Long id) {
+        repository.deleteById(id);
     }
 }

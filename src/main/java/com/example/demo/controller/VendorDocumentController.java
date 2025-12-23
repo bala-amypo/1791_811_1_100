@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.VendorDocument;
+import com.example.demo.entity.VendorDocument;
 import com.example.demo.service.VendorDocumentService;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,30 +17,28 @@ public class VendorDocumentController {
     }
 
     @PostMapping
-    public VendorDocument create(@RequestBody VendorDocument document) {
-        return service.createDocument(document);
+    public VendorDocument create(@RequestBody VendorDocument doc) {
+        return service.save(doc);
     }
 
     @GetMapping("/{id}")
-    public VendorDocument getById(@PathVariable Long id) {
-        return service.getDocumentById(id);
+    public VendorDocument get(@PathVariable Long id) {
+        return service.getById(id);
     }
 
     @GetMapping
     public List<VendorDocument> getAll() {
-        return service.getAllDocuments();
+        return service.getAll();
     }
 
     @PutMapping("/{id}")
-    public VendorDocument update(
-            @PathVariable Long id,
-            @RequestBody VendorDocument document) {
-        return service.updateDocument(id, document);
+    public VendorDocument update(@PathVariable Long id,
+                                 @RequestBody VendorDocument doc) {
+        return service.update(id, doc);
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable Long id) {
-        service.deleteDocument(id);
-        return "Deleted successfully";
+    public void delete(@PathVariable Long id) {
+        service.delete(id);
     }
 }

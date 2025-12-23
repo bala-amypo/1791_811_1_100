@@ -1,43 +1,43 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.Vendor;
+import com.example.demo.entity.Vendor;
 import com.example.demo.service.VendorService;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/vendors")
+@RequestMapping("/vendors")
 public class VendorController {
 
-    private final VendorService vendorService;
+    private final VendorService service;
 
-    public VendorController(VendorService vendorService) {
-        this.vendorService = vendorService;
+    public VendorController(VendorService service) {
+        this.service = service;
     }
 
     @PostMapping
     public Vendor create(@RequestBody Vendor vendor) {
-        return vendorService.createVendor(vendor);
-    }
-
-    @GetMapping
-    public List<Vendor> getAll() {
-        return vendorService.getAllVendors();
+        return service.save(vendor);
     }
 
     @GetMapping("/{id}")
     public Vendor get(@PathVariable Long id) {
-        return vendorService.getVendorById(id);
+        return service.getById(id);
+    }
+
+    @GetMapping
+    public List<Vendor> getAll() {
+        return service.getAll();
     }
 
     @PutMapping("/{id}")
     public Vendor update(@PathVariable Long id, @RequestBody Vendor vendor) {
-        return vendorService.updateVendor(id, vendor);
+        return service.update(id, vendor);
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable Long id) {
-        vendorService.deleteVendor(id);
-        return "Deleted";
+    public void delete(@PathVariable Long id) {
+        service.delete(id);
     }
 }
