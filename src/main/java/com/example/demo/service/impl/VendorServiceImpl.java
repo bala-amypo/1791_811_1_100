@@ -1,11 +1,11 @@
-package com.example.demo.service.impl;
+package com.example.demo.serviceimpl;
 
-import com.example.demo.entity.Vendor;
+import com.example.demo.model.Vendor;
 import com.example.demo.repository.VendorRepository;
 import com.example.demo.service.VendorService;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class VendorServiceImpl implements VendorService {
@@ -17,18 +17,29 @@ public class VendorServiceImpl implements VendorService {
     }
 
     @Override
+    public Vendor createVendor(Vendor vendor) {
+        return vendorRepository.save(vendor);
+    }
+
+    @Override
+    public Vendor getVendorById(Long id) {
+        return vendorRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Vendor not found"));
+    }
+
+    @Override
     public List<Vendor> getAllVendors() {
         return vendorRepository.findAll();
     }
 
     @Override
-    public Optional<Vendor> getVendorById(Long id) {
-        return vendorRepository.findById(id);
-    }
-
-    @Override
-    public Vendor saveVendor(Vendor vendor) {
-        return vendorRepository.save(vendor);
+    public Vendor updateVendor(Long id, Vendor vendor) {
+        Vendor existing = getVendorById(id);
+        existing.setVendorName(vendor.getVendorName());
+        existing.setEmail(vendor.getEmail());
+        existing.setPhone(vendor.getPhone());
+        existing.setIndustry(vendor.getIndustry());
+        return vendorRepository.save(existing);
     }
 
     @Override
