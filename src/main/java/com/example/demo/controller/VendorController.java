@@ -3,7 +3,6 @@ package com.example.demo.controller;
 import com.example.demo.model.Vendor;
 import com.example.demo.service.VendorService;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -17,28 +16,28 @@ public class VendorController {
     }
 
     @PostMapping
-    public Vendor createVendor(@RequestBody Vendor vendor) {
+    public Vendor create(@RequestBody Vendor vendor) {
         return vendorService.createVendor(vendor);
     }
 
     @GetMapping
-    public List<Vendor> getAllVendors() {
+    public List<Vendor> getAll() {
         return vendorService.getAllVendors();
     }
 
     @GetMapping("/{id}")
-    public Vendor getVendor(@PathVariable Long id) {
+    public Vendor get(@PathVariable Long id) {
         return vendorService.getVendorById(id);
     }
 
     @PutMapping("/{id}")
-    public Vendor updateVendor(@PathVariable Long id, @RequestBody Vendor vendor) {
+    public Vendor update(@PathVariable Long id, @RequestBody Vendor vendor) {
         return vendorService.updateVendor(id, vendor);
     }
 
     @DeleteMapping("/{id}")
-    public String deleteVendor(@PathVariable Long id) {
+    public String delete(@PathVariable Long id) {
         vendorService.deleteVendor(id);
-        return "Vendor deleted successfully";
+        return "Deleted";
     }
 }
