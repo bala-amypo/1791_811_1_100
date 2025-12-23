@@ -1,25 +1,11 @@
-package com.example.demo.service.impl;
+package com.example.demo.service;
 
-import com.example.demo.repository.ComplianceScoreRepository;
-import com.example.demo.service.ComplianceScoreService;
-import org.springframework.stereotype.Service;
+import com.example.demo.entity.ComplianceScore;
+import java.util.List;
 
-@Service
-public class ComplianceScoreServiceImpl implements ComplianceScoreService {
+public interface ComplianceScoreService {
 
-    private final ComplianceScoreRepository repository;
+    ComplianceScore save(ComplianceScore score);
 
-    public ComplianceScoreServiceImpl(ComplianceScoreRepository repository) {
-        this.repository = repository;
-    }
-
-    @Override
-    public int getScore(Long vendorId) {
-        return repository.findAll()
-                .stream()
-                .filter(c -> c.getVendor().getId().equals(vendorId))
-                .mapToInt(c -> c.getScore())
-                .findFirst()
-                .orElse(0);
-    }
+    List<ComplianceScore> findAll();
 }
