@@ -47,7 +47,7 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- MySQL Driver for Prod -->
+       
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
