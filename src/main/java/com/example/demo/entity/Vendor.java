@@ -1,8 +1,7 @@
-package com.example.demo.entity;
+package com.example.demo.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "vendors")
@@ -12,31 +11,48 @@ public class Vendor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
-    @Size(max = 100)
-    private String name;
+    @Column(unique = true, nullable = false)
+    private String vendorName;
 
-    @Size(max = 255)
-    private String description;
-
-    @Size(max = 100)
     private String email;
+    private String phone;
+    private String industry;
+
+    private LocalDateTime createdAt;
 
     public Vendor() {}
 
-    public Vendor(String name, String description, String email) {
-        this.name = name;
-        this.description = description;
+    public Vendor(String vendorName, String email, String phone, String industry) {
+        this.vendorName = vendorName;
         this.email = email;
+        this.phone = phone;
+        this.industry = industry;
+    }
+
+    @PrePersist
+    public void onCreate() {
+        this.createdAt = LocalDateTime.now();
     }
 
     // Getters and Setters
+
     public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+
+    public String getVendorName() { return vendorName; }
+
+    public void setVendorName(String vendorName) { this.vendorName = vendorName; }
+
     public String getEmail() { return email; }
+
     public void setEmail(String email) { this.email = email; }
+
+    public String getPhone() { return phone; }
+
+    public void setPhone(String phone) { this.phone = phone; }
+
+    public String getIndustry() { return industry; }
+
+    public void setIndustry(String industry) { this.industry = industry; }
+
+    public LocalDateTime getCreatedAt() { return createdAt; }
 }

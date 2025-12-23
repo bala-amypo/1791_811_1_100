@@ -1,21 +1,24 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.Vendor;
+import com.example.demo.model.Vendor;
 import com.example.demo.service.VendorService;
-import com.example.demo.service.ComplianceScoreService;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
-@RequestMapping("/vendors")
+@RequestMapping("/api/vendors")
 public class VendorController {
 
     private final VendorService vendorService;
-    private final ComplianceScoreService complianceScoreService;
 
-    public VendorController(VendorService vendorService, ComplianceScoreService complianceScoreService) {
+    public VendorController(VendorService vendorService) {
         this.vendorService = vendorService;
-        this.complianceScoreService = complianceScoreService;
+    }
+
+    @PostMapping
+    public Vendor createVendor(@RequestBody Vendor vendor) {
+        return vendorService.createVendor(vendor);
     }
 
     @GetMapping
@@ -23,8 +26,19 @@ public class VendorController {
         return vendorService.getAllVendors();
     }
 
-    @GetMapping("/{id}/score")
-    public Integer getScore(@PathVariable Long id) {
-        return complianceScoreService.getScore(id);
+    @GetMapping("/{id}")
+    public Vendor getVendor(@PathVariable Long id) {
+        return vendorService.getVendorById(id);
+    }
+
+    @PutMapping("/{id}")
+    public Vendor updateVendor(@PathVariable Long id, @RequestBody Vendor vendor) {
+        return vendorService.updateVendor(id, vendor);
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteVendor(@PathVariable Long id) {
+        vendorService.deleteVendor(id);
+        return "Vendor deleted successfully";
     }
 }
