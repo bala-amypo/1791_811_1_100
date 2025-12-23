@@ -1,51 +1,51 @@
-package com.example.demo.service.impl;
+package com.example.demo.serviceimpl;
 
-import com.example.demo.entity.*;
-import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.repository.*;
+import com.example.demo.model.VendorDocument;
+import com.example.demo.repository.VendorDocumentRepository;
 import com.example.demo.service.VendorDocumentService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class VendorDocumentServiceImpl implements VendorDocumentService {
 
-    private final VendorRepository vendorRepository;
-    private final DocumentTypeRepository documentTypeRepository;
-    private final VendorDocumentRepository vendorDocumentRepository;
+    private final VendorDocumentRepository repository;
 
-    @Override
-    public VendorDocument uploadDocument(Long vendorId, Long typeId, VendorDocument document) {
-
-        if (document.getExpiryDate().isBefore(LocalDate.now())) {
-            throw new RuntimeException("Expiry date must be in future");
-        }
-
-        Vendor vendor = vendorRepository.findById(vendorId)
-                .orElseThrow(() -> new ResourceNotFoundException("Vendor not found"));
-
-        DocumentType type = documentTypeRepository.findById(typeId)
-                .orElseThrow(() -> new ResourceNotFoundException("DocumentType not found"));
-
-        document.setVendor(vendor);
-        document.setDocumentType(type);
-        document.setIsValid(true);
-
-        return vendorDocumentRepository.save(document);
+    public VendorDocumentServiceImpl(VendorDocumentRepository repository) {
+        this.repository = repository;
     }
 
     @Override
-    public List<VendorDocument> getDocumentsForVendor(Long vendorId) {
-        return vendorDocumentRepository.findByVendorId(vendorId);
+    public VendorDocument createDocument(VendorDocument document) {
+        return repository.save(document);
     }
 
     @Override
-    public VendorDocument getDocument(Long id) {
-        return vendorDocumentRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Document not found"));
+    public VendorDocument getDocumentById(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Document not found"));
+    }
+
+    @Override
+    public List<VendorDocument> getAllDocuments() {
+        return repository.findAll();
+    }
+
+    @Override
+    public VendorDocument updateDocument(Long id, VendorDocument document) {
+        VendorDocument existing = getDocumentById(id);
+
+        existing.setVendorName(document.getVendorName());
+        existing.setDocumentType(document.getDocumentType());
+        existing.setExpiryDate(document.getExpiryDate());
+        existing.setValid(document.isValid());
+
+        return repository.save(existing);
+    }
+
+    @Override
+    public void deleteDocument(Long id) {
+        repository.deleteById(id);
     }
 }
