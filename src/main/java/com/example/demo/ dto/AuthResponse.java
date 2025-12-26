@@ -7,6 +7,13 @@ public class AuthResponse {
     private String username;
     private String email;
     private String role;  // <-- add this
+public AuthResponse(String token, long userId, String username, String email) {
+    this.token = token;
+    this.userId = userId;
+    this.username = username;
+    this.email = email;
+    this.role = "USER"; // default value
+}
 
     // No-args constructor
     public AuthResponse() {}
