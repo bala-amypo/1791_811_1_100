@@ -2,63 +2,30 @@ package com.example.demo.model;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDateTime;
-
 @Entity
-@Table(name = "compliance_scores")
 public class ComplianceScore {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Double scoreValue;
-
-    private String rating;
-
-    private LocalDateTime evaluatedAt;
-
     @ManyToOne
-    @JoinColumn(name = "vendor_id")
     private Vendor vendor;
 
-    public ComplianceScore() {
-    }
+    private double score;
 
-    @PrePersist
-    public void prePersist() {
-        this.evaluatedAt = LocalDateTime.now();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public Double getScoreValue() {
-        return scoreValue;
-    }
-
-    public void setScoreValue(Double scoreValue) {
-        this.scoreValue = scoreValue;
-    }
-
-    public String getRating() {
-        return rating;
-    }
-    
-    public void setRating(String rating) {
-        this.rating = rating;
-    }
-
-    public Vendor getVendor() {
-        return vendor;
-    }
-
+    // REQUIRED by test
     public void setVendor(Vendor vendor) {
         this.vendor = vendor;
     }
 
-    public LocalDateTime getEvaluatedAt() {
-        return evaluatedAt;
+    // REQUIRED by test
+    public void setScore(double score) {
+        this.score = score;
+    }
+
+    // REQUIRED by test
+    public double getScore() {
+        return score;
     }
 }

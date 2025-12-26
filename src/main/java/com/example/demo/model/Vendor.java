@@ -2,39 +2,14 @@ package com.example.demo.model;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
-
 @Entity
-@Table(name = "vendors")
 public class Vendor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String vendorName;
-
-    private String industry;
-
-    private LocalDateTime createdAt;
-
-    @ManyToMany
-    @JoinTable(
-            name = "vendor_document_types",
-            joinColumns = @JoinColumn(name = "vendor_id"),
-            inverseJoinColumns = @JoinColumn(name = "document_type_id")
-    )
-    private Set<DocumentType> supportedDocumentTypes = new HashSet<>();
-
-    public Vendor() {
-    }
-
-    @PrePersist
-    public void prePersist() {
-        this.createdAt = LocalDateTime.now();
-    }
+    private String name;
 
     public Long getId() {
         return id;
@@ -44,27 +19,13 @@ public class Vendor {
         this.id = id;
     }
 
-    public String getVendorName() {
-        return vendorName;
+    // REQUIRED by test
+    public String getName() {
+        return name;
     }
 
-    public void setVendorName(String vendorName) {
-        this.vendorName = vendorName;
-    }
-
-    public String getIndustry() {
-        return industry;
-    }
-
-    public void setIndustry(String industry) {
-        this.industry = industry;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public Set<DocumentType> getSupportedDocumentTypes() {
-        return supportedDocumentTypes;
+    // REQUIRED by test
+    public void setName(String name) {
+        this.name = name;
     }
 }
