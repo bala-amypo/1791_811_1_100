@@ -14,17 +14,19 @@ public class ComplianceScore {
 
     private double score;
 
-    // REQUIRED by test
     public void setVendor(Vendor vendor) {
         this.vendor = vendor;
     }
 
-    // REQUIRED by test
+    // REQUIRED by service
+    public Vendor getVendor() {
+        return vendor;
+    }
+
     public void setScore(double score) {
         this.score = score;
     }
 
-    // REQUIRED by test
     public double getScore() {
         return score;
     }

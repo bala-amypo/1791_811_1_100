@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 public class VendorDocument {
@@ -12,16 +13,36 @@ public class VendorDocument {
     @ManyToOne
     private Vendor vendor;
 
+    @ManyToOne
+    private DocumentType documentType;
+
     private boolean verified;
 
-    // REQUIRED by test
+    private boolean isValid;
+
+    private LocalDate expiryDate;
+
     public void setId(Long id) {
         this.id = id;
     }
 
-    // REQUIRED by test
     public void setVendor(Vendor vendor) {
         this.vendor = vendor;
+    }
+
+    // REQUIRED by VendorDocumentServiceImpl
+    public LocalDate getExpiryDate() {
+        return expiryDate;
+    }
+
+    // REQUIRED by VendorDocumentServiceImpl
+    public void setDocumentType(DocumentType documentType) {
+        this.documentType = documentType;
+    }
+
+    // REQUIRED by VendorDocumentServiceImpl
+    public void setIsValid(boolean isValid) {
+        this.isValid = isValid;
     }
 
     // REQUIRED by test
