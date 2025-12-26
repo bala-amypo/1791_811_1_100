@@ -14,6 +14,9 @@ public class ComplianceScore {
 
     private double score;
 
+    // 🔹 REQUIRED by ComplianceScoreServiceImpl
+    private String rating;
+
     public void setVendor(Vendor vendor) {
         this.vendor = vendor;
     }
@@ -29,5 +32,14 @@ public class ComplianceScore {
 
     public double getScore() {
         return score;
+    }
+
+    
+    public void setRating(String rating) {
+        this.rating = rating;
+    }
+
+    public String getRating() {
+        return rating;
     }
 }

@@ -19,12 +19,10 @@ public class Vendor {
         this.id = id;
     }
 
-    // REQUIRED by test
     public String getName() {
         return name;
     }
 
-    // REQUIRED by test
     public void setName(String name) {
         this.name = name;
     }

@@ -15,17 +15,14 @@ public class DocumentType {
         return id;
     }
 
-    // REQUIRED by test
     public void setId(Long id) {
         this.id = id;
     }
 
-    // REQUIRED by test
     public String getName() {
         return name;
     }
 
-    // REQUIRED by test
     public void setName(String name) {
         this.name = name;
     }
