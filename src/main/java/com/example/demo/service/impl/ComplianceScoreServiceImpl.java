@@ -1,66 +1,67 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.model.ComplianceRule;
 import com.example.demo.model.ComplianceScore;
 import com.example.demo.model.DocumentType;
 import com.example.demo.model.Vendor;
-import com.example.demo.model.VendorDocument;
+import com.example.demo.repository.ComplianceRuleRepository;
 import com.example.demo.repository.ComplianceScoreRepository;
-import com.example.demo.repository.DocumentTypeRepository;
-import com.example.demo.repository.VendorDocumentRepository;
 import com.example.demo.repository.VendorRepository;
+import com.example.demo.service.ComplianceScoreService;
 import com.example.demo.util.ComplianceScoringEngine;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-public class ComplianceScoreServiceImpl {
+@Service
+public class ComplianceScoreServiceImpl implements ComplianceScoreService {
 
-    private final VendorRepository vendorRepository;
-    private final DocumentTypeRepository documentTypeRepository;
-    private final VendorDocumentRepository vendorDocumentRepository;
-    private final ComplianceScoreRepository complianceScoreRepository;
+    @Autowired
+    private VendorRepository vendorRepository;
 
-    private final ComplianceScoringEngine scoringEngine = new ComplianceScoringEngine();
+    @Autowired
+    private ComplianceRuleRepository ruleRepository;
 
-    public ComplianceScoreServiceImpl(VendorRepository vendorRepository,
-                                      DocumentTypeRepository documentTypeRepository,
-                                      VendorDocumentRepository vendorDocumentRepository,
-                                      ComplianceScoreRepository complianceScoreRepository) {
-        this.vendorRepository = vendorRepository;
-        this.documentTypeRepository = documentTypeRepository;
-        this.vendorDocumentRepository = vendorDocumentRepository;
-        this.complianceScoreRepository = complianceScoreRepository;
-    }
+    @Autowired
+    private ComplianceScoreRepository scoreRepository;
 
+    private final ComplianceScoringEngine scoringEngine =
+            new ComplianceScoringEngine();
+
+    @Override
     public ComplianceScore evaluateVendor(Long vendorId) {
 
         Vendor vendor = vendorRepository.findById(vendorId)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Vendor not found"));
 
-        List<DocumentType> requiredTypes =
-                documentTypeRepository.findByRequiredTrue();
+        List<DocumentType> submittedDocuments =
+                vendor.getSubmittedDocumentTypes();
 
-        List<VendorDocument> vendorDocs =
-                vendorDocumentRepository.findByVendor(vendor);
+        List<ComplianceRule> rules = ruleRepository.findAll();
 
-        double scoreValue = scoringEngine.calculateScore(requiredTypes, vendorDocs);
+        double scoreValue =
+                scoringEngine.calculateScore(submittedDocuments, rules);
+
         String rating = scoringEngine.deriveRating(scoreValue);
 
-        ComplianceScore score = complianceScoreRepository
-                .findByVendor_Id(vendorId)
-                .orElse(new ComplianceScore());
-
+        ComplianceScore score = new ComplianceScore();
         score.setVendor(vendor);
-        score.setScoreValue(scoreValue);
+        score.setScore(scoreValue);
         score.setRating(rating);
 
-        return complianceScoreRepository.save(score);
+        return scoreRepository.save(score);
     }
 
+    @Override
     public ComplianceScore getScore(Long vendorId) {
-        return complianceScoreRepository.findByVendor_Id(vendorId)
+
+        return scoreRepository.findByVendorId(vendorId)
                 .orElseThrow(() ->
-                        new ResourceNotFoundException("Score not found"));
+                        new ResourceNotFoundException(
+                                "Compliance score not found"));
     }
 }
