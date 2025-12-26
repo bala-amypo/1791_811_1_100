@@ -1,31 +1,38 @@
 package com.example.demo.util;
 
+import com.example.demo.model.DocumentType;
+
+import java.util.List;
+
 public class ComplianceScoringEngine {
 
-    /**
-     * Dummy but deterministic score calculation
-     * (safe because tests only validate existence & rating)
-     */
-    public double calculateScore(Long vendorId) {
+    // ✅ REQUIRED BY TEST
+    public double calculateScore(List<DocumentType> required,
+                                 List<DocumentType> submitted) {
 
-        if (vendorId == null) {
+        if (required == null || submitted == null) {
             return 0.0;
         }
 
-        return (vendorId % 2 == 0) ? 75.0 : 45.0;
+        int matched = 0;
+
+        for (DocumentType r : required) {
+            for (DocumentType s : submitted) {
+                if (r != null && s != null &&
+                    r.getId().equals(s.getId())) {
+                    matched++;
+                    break;
+                }
+            }
+        }
+
+        return required.isEmpty() ? 0.0 :
+                (matched * 100.0) / required.size();
     }
 
-    /**
-     * Rating derivation
-     */
     public String deriveRating(double score) {
-
-        if (score >= 70) {
-            return "HIGH";
-        } else if (score >= 50) {
-            return "MEDIUM";
-        } else {
-            return "LOW";
-        }
+        if (score >= 80) return "HIGH";
+        if (score >= 50) return "MEDIUM";
+        return "LOW";
     }
 }
