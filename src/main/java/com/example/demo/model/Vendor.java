@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -11,22 +12,30 @@ public class Vendor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String name;
 
-    @ElementCollection
-    @CollectionTable(name = "vendor_supported_documents", joinColumns = @JoinColumn(name = "vendor_id"))
-    @Column(name = "document_type")
-    private List<String> supportedDocumentTypes; // Store as Strings
+    @ManyToMany
+    @JoinTable(
+        name = "vendor_document_types",
+        joinColumns = @JoinColumn(name = "vendor_id"),
+        inverseJoinColumns = @JoinColumn(name = "document_type_id")
+    )
+    private List<DocumentType> supportedDocumentTypes = new ArrayList<>();
 
-    public Vendor() {}
+    public Vendor() {
+    }
 
-    public Vendor(String name, List<String> supportedDocumentTypes) {
+    public Vendor(String name) {
         this.name = name;
-        this.supportedDocumentTypes = supportedDocumentTypes;
     }
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -37,11 +46,11 @@ public class Vendor {
         this.name = name;
     }
 
-    public List<String> getSupportedDocumentTypes() {
+    public List<DocumentType> getSupportedDocumentTypes() {
         return supportedDocumentTypes;
     }
 
-    public void setSupportedDocumentTypes(List<String> supportedDocumentTypes) {
+    public void setSupportedDocumentTypes(List<DocumentType> supportedDocumentTypes) {
         this.supportedDocumentTypes = supportedDocumentTypes;
     }
 }

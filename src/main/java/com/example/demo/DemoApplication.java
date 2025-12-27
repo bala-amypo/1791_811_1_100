@@ -18,9 +18,6 @@ public class DemoApplication {
         SpringApplication.run(DemoApplication.class, args);
     }
 
-    /**
-     * Sample data initializer (safe for testing).
-     */
     @Bean
     CommandLineRunner initData(
             VendorRepository vendorRepository,
@@ -34,7 +31,7 @@ public class DemoApplication {
             documentTypeRepository.saveAll(List.of(gst, pan));
 
             Vendor vendor = new Vendor("ABC Vendor");
-            vendor.getSupportedDocumentTypes().add(gst);
+            vendor.getSupportedDocumentTypes().add(gst); // ✅ ENTITY, not String
 
             vendorRepository.save(vendor);
         };
