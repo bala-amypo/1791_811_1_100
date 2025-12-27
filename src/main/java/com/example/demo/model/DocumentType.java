@@ -1,13 +1,33 @@
 package com.example.demo.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "document_types")
 public class DocumentType {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false, unique = true)
     private String name;
 
-    public DocumentType() {}
+    // Constructors
+    public DocumentType() {
+    }a
 
     public DocumentType(String name) {
         this.name = name;
+    }
+
+    // Getters & Setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -16,15 +36,5 @@ public class DocumentType {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    // Check if this document type is supported by a vendor
-    public boolean isSupportedBy(Vendor vendor) {
-        return vendor.getSupportedDocumentTypes().contains(this.name);
-    }
-
-    @Override
-    public String toString() {
-        return name;
     }
 }

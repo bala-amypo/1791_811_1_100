@@ -1,24 +1,37 @@
 package com.example.demo.model;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
-public class VendorDocument {
+@Entity
+@Table(name = "vendors")
+public class Vendor {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String fileUrl;
-    private LocalDate expiryDate;
-    private LocalDateTime uploadedAt;
-    private Vendor vendor;
-    private DocumentType documentType;
 
-    public VendorDocument() {}
+    @Column(nullable = false)
+    private String name;
 
-    public VendorDocument(Vendor vendor, DocumentType documentType) {
-        this.vendor = vendor;
-        this.documentType = documentType;
-        prePersist();
+    @ManyToMany
+    @JoinTable(
+        name = "vendor_document_types",
+        joinColumns = @JoinColumn(name = "vendor_id"),
+        inverseJoinColumns = @JoinColumn(name = "document_type_id")
+    )
+    private List<DocumentType> supportedDocumentTypes = new ArrayList<>();
+
+    // Constructors
+    public Vendor() {
     }
 
+    public Vendor(String name) {
+        this.name = name;
+    }
+
+    // Getters & Setters
     public Long getId() {
         return id;
     }
@@ -27,37 +40,19 @@ public class VendorDocument {
         this.id = id;
     }
 
-    public String getFileUrl() {
-        return fileUrl;
+    public String getName() {
+        return name;
     }
 
-    public void setFileUrl(String fileUrl) {
-        this.fileUrl = fileUrl;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public LocalDate getExpiryDate() {
-        return expiryDate;
+    public List<DocumentType> getSupportedDocumentTypes() {
+        return supportedDocumentTypes;
     }
 
-    public void setExpiryDate(LocalDate expiryDate) {
-        this.expiryDate = expiryDate;
-    }
-
-    public LocalDateTime getUploadedAt() {
-        return uploadedAt;
-    }
-
-    public Vendor getVendor() {
-        return vendor;
-    }
-
-    public DocumentType getDocumentType() {
-        return documentType;
-    }
-
-    public void prePersist() {
-        if (uploadedAt == null) {
-            uploadedAt = LocalDateTime.now();
-        }
+    public void setSupportedDocumentTypes(List<DocumentType> supportedDocumentTypes) {
+        this.supportedDocumentTypes = supportedDocumentTypes;
     }
 }

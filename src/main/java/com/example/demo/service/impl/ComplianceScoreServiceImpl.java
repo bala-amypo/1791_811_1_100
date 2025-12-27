@@ -1,6 +1,9 @@
-package com.example.demo.service.impl;
+package com.example.demo.service;
 
-import com.example.demo.repository.*;
+import com.example.demo.model.DocumentType;
+import com.example.demo.model.Vendor;
+import com.example.demo.repository.DocumentTypeRepository;
+import com.example.demo.repository.VendorRepository;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -8,18 +11,26 @@ public class ComplianceScoreServiceImpl {
 
     private final VendorRepository vendorRepository;
     private final DocumentTypeRepository documentTypeRepository;
-    private final VendorDocumentRepository vendorDocumentRepository;
-    private final ComplianceScoreRepository complianceScoreRepository;
 
     public ComplianceScoreServiceImpl(
             VendorRepository vendorRepository,
-            DocumentTypeRepository documentTypeRepository,
-            VendorDocumentRepository vendorDocumentRepository,
-            ComplianceScoreRepository complianceScoreRepository
-    ) {
+            DocumentTypeRepository documentTypeRepository) {
         this.vendorRepository = vendorRepository;
         this.documentTypeRepository = documentTypeRepository;
-        this.vendorDocumentRepository = vendorDocumentRepository;
-        this.complianceScoreRepository = complianceScoreRepository;
+    }
+
+    /**
+     * Checks whether a vendor supports a given document type.
+     * Uses ENTITY comparison (not strings).
+     */
+    public boolean isDocumentSupported(Long vendorId, Long documentTypeId) {
+
+        Vendor vendor = vendorRepository.findById(vendorId)
+                .orElseThrow(() -> new IllegalArgumentException("Vendor not found"));
+
+        DocumentType documentType = documentTypeRepository.findById(documentTypeId)
+                .orElseThrow(() -> new IllegalArgumentException("DocumentType not found"));
+
+        return vendor.getSupportedDocumentTypes().contains(documentType);
     }
 }
