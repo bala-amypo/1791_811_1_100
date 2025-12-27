@@ -22,36 +22,53 @@ public class VendorDocument {
 
     private LocalDate expiryDate;
 
+    // ===== Getters & Setters =====
+
+    public Long getId() {
+        return id;
+    }
+
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Vendor getVendor() {
+        return vendor;
     }
 
     public void setVendor(Vendor vendor) {
         this.vendor = vendor;
     }
 
-    // REQUIRED by VendorDocumentServiceImpl
-    public LocalDate getExpiryDate() {
-        return expiryDate;
+    public DocumentType getDocumentType() {
+        return documentType;
     }
 
-    // REQUIRED by VendorDocumentServiceImpl
     public void setDocumentType(DocumentType documentType) {
         this.documentType = documentType;
     }
 
-    // REQUIRED by VendorDocumentServiceImpl
-    public void setIsValid(boolean isValid) {
-        this.isValid = isValid;
+    public boolean isVerified() {
+        return verified;
     }
 
-    // REQUIRED by test
     public void setVerified(boolean verified) {
         this.verified = verified;
     }
 
-    // REQUIRED by test
-    public boolean isVerified() {
-        return verified;
+    public boolean isValid() {
+        return isValid;
+    }
+
+    public void setIsValid(boolean isValid) {
+        this.isValid = isValid;
+    }
+
+    public LocalDate getExpiryDate() {
+        return expiryDate;
+    }
+
+    public void setExpiryDate(LocalDate expiryDate) {
+        this.expiryDate = expiryDate;
     }
 }

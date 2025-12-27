@@ -1,23 +1,74 @@
-package com.example.demo.dto;
+package com.example.demo.model;
 
-public class AuthResponse {
+import jakarta.persistence.*;
+import java.time.LocalDate;
 
-    private String token;
-    private Long userId;
-    private String username;
-    private String email;
-    private String role;
+@Entity
+public class VendorDocument {
 
-    public AuthResponse(String token, Long userId,
-                        String username, String email, String role) {
-        this.token = token;
-        this.userId = userId;
-        this.username = username;
-        this.email = email;
-        this.role = role;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne
+    private Vendor vendor;
+
+    @ManyToOne
+    private DocumentType documentType;
+
+    private boolean verified;
+
+    private boolean isValid;
+
+    private LocalDate expiryDate;
+
+    // ===== Getters & Setters =====
+
+    public Long getId() {
+        return id;
     }
 
-    public Long getUserId() { return userId; }
-    public String getEmail() { return email; }
-    public String getRole() { return role; }
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Vendor getVendor() {
+        return vendor;
+    }
+
+    public void setVendor(Vendor vendor) {
+        this.vendor = vendor;
+    }
+
+    public DocumentType getDocumentType() {
+        return documentType;
+    }
+
+    public void setDocumentType(DocumentType documentType) {
+        this.documentType = documentType;
+    }
+
+    public boolean isVerified() {
+        return verified;
+    }
+
+    public void setVerified(boolean verified) {
+        this.verified = verified;
+    }
+
+    public boolean isValid() {
+        return isValid;
+    }
+
+    public void setIsValid(boolean isValid) {
+        this.isValid = isValid;
+    }
+
+    public LocalDate getExpiryDate() {
+        return expiryDate;
+    }
+
+    public void setExpiryDate(LocalDate expiryDate) {
+        this.expiryDate = expiryDate;
+    }
 }
