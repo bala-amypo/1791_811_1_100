@@ -1,3 +1,4 @@
+// File: src/main/java/com/example/demo/model/VendorDocument.java
 package com.example.demo.model;
 
 import jakarta.persistence.*;
@@ -10,43 +11,17 @@ public class VendorDocument {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String fileUrl;
-    private LocalDateTime uploadedAt;
+    private String name;
+
     private LocalDateTime expiryDate;
-    private boolean isValid;
 
-    @ManyToOne
-    @JoinColumn(name = "vendor_id")
-    private Vendor vendor;
-
-    @ManyToOne
-    @JoinColumn(name = "document_type_id")
-    private DocumentType documentType;
-
-    // Getters and Setters
+    // getters and setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
-    public String getFileUrl() { return fileUrl; }
-    public void setFileUrl(String fileUrl) { this.fileUrl = fileUrl; }
-
-    public LocalDateTime getUploadedAt() { return uploadedAt; }
-    public void setUploadedAt(LocalDateTime uploadedAt) { this.uploadedAt = uploadedAt; }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
     public LocalDateTime getExpiryDate() { return expiryDate; }
     public void setExpiryDate(LocalDateTime expiryDate) { this.expiryDate = expiryDate; }
-
-    public boolean getIsValid() { return isValid; }
-    public void setIsValid(boolean isValid) { this.isValid = isValid; }
-
-    public Vendor getVendor() { return vendor; }
-    public void setVendor(Vendor vendor) { this.vendor = vendor; }
-
-    public DocumentType getDocumentType() { return documentType; }
-    public void setDocumentType(DocumentType documentType) { this.documentType = documentType; }
-
-    @PrePersist
-    public void prePersist() {
-        this.uploadedAt = LocalDateTime.now();
-    }
 }
