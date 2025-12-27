@@ -13,10 +13,9 @@ public class Vendor {
     private Long id;
 
     private String vendorName;
-
     private String industry;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "vendors")
     private Set<DocumentType> supportedDocumentTypes = new HashSet<>();
 
     private LocalDateTime createdAt;
@@ -30,6 +29,11 @@ public class Vendor {
 
     public Long getId() {
         return id;
+    }
+
+    // 🔴 REQUIRED BY TESTS
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getVendorName() {

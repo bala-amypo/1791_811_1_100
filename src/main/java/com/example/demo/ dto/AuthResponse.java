@@ -1,74 +1,22 @@
-package com.example.demo.model;
+package com.example.demo.dto;
 
-import jakarta.persistence.*;
-import java.time.LocalDate;
+public class AuthResponse {
 
-@Entity
-public class VendorDocument {
+    private String token;
+    private Long userId;
+    private String username;
+    private String role;
+    private String email;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @ManyToOne
-    private Vendor vendor;
-
-    @ManyToOne
-    private DocumentType documentType;
-
-    private boolean verified;
-
-    private boolean isValid;
-
-    private LocalDate expiryDate;
-
-    // ===== Getters & Setters =====
-
-    public Long getId() {
-        return id;
+    public AuthResponse(String token, Long userId, String username, String role, String email) {
+        this.token = token;
+        this.userId = userId;
+        this.username = username;
+        this.role = role;
+        this.email = email;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Vendor getVendor() {
-        return vendor;
-    }
-
-    public void setVendor(Vendor vendor) {
-        this.vendor = vendor;
-    }
-
-    public DocumentType getDocumentType() {
-        return documentType;
-    }
-
-    public void setDocumentType(DocumentType documentType) {
-        this.documentType = documentType;
-    }
-
-    public boolean isVerified() {
-        return verified;
-    }
-
-    public void setVerified(boolean verified) {
-        this.verified = verified;
-    }
-
-    public boolean isValid() {
-        return isValid;
-    }
-
-    public void setIsValid(boolean isValid) {
-        this.isValid = isValid;
-    }
-
-    public LocalDate getExpiryDate() {
-        return expiryDate;
-    }
-
-    public void setExpiryDate(LocalDate expiryDate) {
-        this.expiryDate = expiryDate;
+    public String getToken() {
+        return token;
     }
 }
