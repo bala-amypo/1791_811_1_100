@@ -1,4 +1,3 @@
-// File: src/main/java/com/example/demo/service/impl/VendorDocumentServiceImpl.java
 package com.example.demo.service.impl;
 
 import com.example.demo.model.VendorDocument;
@@ -18,12 +17,18 @@ public class VendorDocumentServiceImpl implements VendorDocumentService {
     }
 
     @Override
-    public VendorDocument save(VendorDocument document) {
-        return repository.save(document);
+    public VendorDocument save(VendorDocument doc) {
+        doc.prePersist();
+        return repository.save(doc);
     }
 
     @Override
-    public List<VendorDocument> findAll() {
+    public VendorDocument getDocument(Long id) {
+        return repository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<VendorDocument> getAllDocuments() {
         return repository.findAll();
     }
 }
