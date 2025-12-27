@@ -18,6 +18,12 @@ public class DemoApplication {
         SpringApplication.run(DemoApplication.class, args);
     }
 
+    /**
+     * Safe data initializer.
+     * - Does NOT insert duplicates
+     * - Restart-safe
+     * - Production-friendly
+     */
     @Bean
     CommandLineRunner initData(
             VendorRepository vendorRepository,
@@ -25,15 +31,32 @@ public class DemoApplication {
 
         return args -> {
 
-            DocumentType gst = new DocumentType("GST Certificate");
-            DocumentType pan = new DocumentType("PAN Card");
+            // ----- Document Types -----
+            DocumentType gst = documentTypeRepository
+                    .findByName("GST Certificate")
+                    .orElseGet(() ->
+                            documentTypeRepository.save(
+                                    new DocumentType("GST Certificate")));
 
-            documentTypeRepository.saveAll(List.of(gst, pan));
+            DocumentType pan = documentTypeRepository
+                    .findByName("PAN Card")
+                    .orElseGet(() ->
+                            documentTypeRepository.save(
+                                    new DocumentType("PAN Card")));
 
-            Vendor vendor = new Vendor("ABC Vendor");
-            vendor.getSupportedDocumentTypes().add(gst); // ✅ ENTITY, not String
+            // ----- Vendor -----
+            Vendor vendor = vendorRepository.findAll()
+                    .stream()
+                    .findFirst()
+                    .orElseGet(() ->
+                            vendorRepository.save(
+                                    new Vendor("ABC Vendor")));
 
-            vendorRepository.save(vendor);
+            // ----- Link Vendor & DocumentType -----
+            if (!vendor.getSupportedDocumentTypes().contains(gst)) {
+                vendor.getSupportedDocumentTypes().add(gst);
+                vendorRepository.save(vendor);
+            }
         };
     }
 }
