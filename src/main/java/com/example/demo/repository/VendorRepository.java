@@ -4,6 +4,9 @@ import com.example.demo.model.Vendor;
 
 import java.util.Optional;
 
+import org.springframework.stereotype.Repository;
+
+@Repository
 public interface VendorRepository {
 
     default Vendor save(Vendor vendor) {
