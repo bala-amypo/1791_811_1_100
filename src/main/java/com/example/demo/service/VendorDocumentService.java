@@ -8,4 +8,7 @@ public interface VendorDocumentService {
     VendorDocument save(VendorDocument doc);
     VendorDocument getDocument(Long id);
     List<VendorDocument> getAllDocuments();
+
+    // For tests
+    VendorDocument uploadDocument(long vendorId, long docTypeId, VendorDocument doc);
 }
