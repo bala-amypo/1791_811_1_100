@@ -1,66 +1,38 @@
-package com.example.demo.model;
+package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
+@Table(name = "vendors")
 public class Vendor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String vendorName;
-    private String industry;
+    private String name;
 
-    @ManyToMany(mappedBy = "vendors")
-    private Set<DocumentType> supportedDocumentTypes = new HashSet<>();
+    // Constructors
+    public Vendor() {}
 
-    private LocalDateTime createdAt;
-
-    @PrePersist
-    public void prePersist() {
-        this.createdAt = LocalDateTime.now();
+    public Vendor(String name) {
+        this.name = name;
     }
 
-    // ===== Getters & Setters =====
-
+    // Getters and setters
     public Long getId() {
         return id;
     }
 
-    // 🔴 REQUIRED BY TESTS
     public void setId(Long id) {
         this.id = id;
     }
 
-    public String getVendorName() {
-        return vendorName;
+    public String getName() {
+        return name;
     }
 
-    public void setVendorName(String vendorName) {
-        this.vendorName = vendorName;
-    }
-
-    public String getIndustry() {
-        return industry;
-    }
-
-    public void setIndustry(String industry) {
-        this.industry = industry;
-    }
-
-    public Set<DocumentType> getSupportedDocumentTypes() {
-        return supportedDocumentTypes;
-    }
-
-    public void setSupportedDocumentTypes(Set<DocumentType> supportedDocumentTypes) {
-        this.supportedDocumentTypes = supportedDocumentTypes;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public void setName(String name) {
+        this.name = name;
     }
 }
