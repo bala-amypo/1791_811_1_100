@@ -1,11 +1,10 @@
 package com.example.demo.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
+@Table(name = "vendors")
 public class Vendor {
 
     @Id
@@ -14,10 +13,35 @@ public class Vendor {
 
     private String name;
 
-    // getters and setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    @ElementCollection
+    @CollectionTable(name = "vendor_supported_documents", joinColumns = @JoinColumn(name = "vendor_id"))
+    @Column(name = "document_type")
+    private List<String> supportedDocumentTypes; // Store as Strings
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public Vendor() {}
+
+    public Vendor(String name, List<String> supportedDocumentTypes) {
+        this.name = name;
+        this.supportedDocumentTypes = supportedDocumentTypes;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<String> getSupportedDocumentTypes() {
+        return supportedDocumentTypes;
+    }
+
+    public void setSupportedDocumentTypes(List<String> supportedDocumentTypes) {
+        this.supportedDocumentTypes = supportedDocumentTypes;
+    }
 }
