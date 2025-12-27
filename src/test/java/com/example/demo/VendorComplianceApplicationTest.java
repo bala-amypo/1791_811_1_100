@@ -646,3 +646,5 @@ public void testVendorNoDirectVendorDocumentLink() {
     public void testExpiredDocumentQueryPositive() {
         VendorDocument d = new VendorDocument();
         d.setExpiryDate(LocalDate.now().minusDays(1));
+        }
+}
