@@ -1,9 +1,9 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
+import java.time.LocalDateTime;
 
 @Entity
 public class Vendor {
@@ -17,21 +17,29 @@ public class Vendor {
 
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "vendor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "vendor", cascade = CascadeType.ALL)
     private Set<VendorDocument> supportedDocumentTypes = new HashSet<>();
 
-    public Vendor() {}
-
-    // Getter / Setter
+    // Getters and Setters
     public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
     public String getVendorName() { return vendorName; }
     public void setVendorName(String vendorName) { this.vendorName = vendorName; }
+
     public String getIndustry() { return industry; }
     public void setIndustry(String industry) { this.industry = industry; }
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public Set<VendorDocument> getSupportedDocumentTypes() { return supportedDocumentTypes; }
 
-    // Pre-persist method
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+
+    public Set<VendorDocument> getSupportedDocumentTypes() { return supportedDocumentTypes; }
+    public void setSupportedDocumentTypes(Set<VendorDocument> supportedDocumentTypes) { 
+        this.supportedDocumentTypes = supportedDocumentTypes; 
+    }
+
     @PrePersist
-    public void prePersist() { createdAt = LocalDateTime.now(); }
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+    }
 }
