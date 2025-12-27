@@ -1,54 +1,25 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.model.Vendor;
-import com.example.demo.model.DocumentType;
 import com.example.demo.model.VendorDocument;
 import com.example.demo.repository.VendorDocumentRepository;
-import com.example.demo.repository.VendorRepository;
-import com.example.demo.repository.DocumentTypeRepository;
-import com.example.demo.service.VendorDocumentService;
-import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-@Service
-public class VendorDocumentServiceImpl implements VendorDocumentService {
+public class VendorDocumentServiceImpl {
 
-    private final VendorDocumentRepository documentRepository;
-    private final VendorRepository vendorRepository;
-    private final DocumentTypeRepository typeRepository;
+    private final VendorDocumentRepository vendorDocumentRepository;
+    private final Map<Long, VendorDocument> storage = new HashMap<>();
 
-    public VendorDocumentServiceImpl(VendorDocumentRepository documentRepository,
-                                     VendorRepository vendorRepository,
-                                     DocumentTypeRepository typeRepository) {
-        this.documentRepository = documentRepository;
-        this.vendorRepository = vendorRepository;
-        this.typeRepository = typeRepository;
+    public VendorDocumentServiceImpl(VendorDocumentRepository vendorDocumentRepository) {
+        this.vendorDocumentRepository = vendorDocumentRepository;
     }
 
-    @Override
-    public VendorDocument save(VendorDocument doc) {
-        doc.prePersist();
-        return documentRepository.save(doc);
+    public void uploadDocument(long vendorId, long documentTypeId, VendorDocument document) {
+        storage.put(documentTypeId, document);
     }
 
-    @Override
-    public VendorDocument getDocument(Long id) {
-        return documentRepository.findById(id).orElse(null);
-    }
-
-    @Override
-    public List<VendorDocument> getAllDocuments() {
-        return documentRepository.findAll();
-    }
-
-    @Override
-    public VendorDocument uploadDocument(long vendorId, long typeId, VendorDocument doc) {
-        Vendor vendor = vendorRepository.findById(vendorId).orElseThrow();
-        DocumentType type = typeRepository.findById(typeId).orElseThrow();
-        doc.setVendor(vendor);
-        doc.setDocumentType(type);
-        doc.prePersist();
-        return documentRepository.save(doc);
+    public VendorDocument getDocument(long documentTypeId) {
+        return storage.get(documentTypeId);
     }
 }
