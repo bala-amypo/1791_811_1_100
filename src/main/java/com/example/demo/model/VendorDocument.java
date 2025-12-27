@@ -1,20 +1,17 @@
 package com.example.demo.model;
 
+import java.util.Date;
+
 public class VendorDocument {
     private Long id;
-    private Vendor vendor;
-    private DocumentType documentType;
-    private boolean verified;
+    private Date expiryDate;
+    private boolean isValid;
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Date getExpiryDate() { return expiryDate; }
+    public void setExpiryDate(Date expiryDate) { this.expiryDate = expiryDate; }
 
-    public Vendor getVendor() { return vendor; }
-    public void setVendor(Vendor vendor) { this.vendor = vendor; }
+    public boolean isValid() { return isValid; }
+    public void setIsValid(boolean isValid) { this.isValid = isValid; }
 
-    public DocumentType getDocumentType() { return documentType; }
-    public void setDocumentType(DocumentType documentType) { this.documentType = documentType; }
-
-    public boolean isVerified() { return verified; }
-    public void setVerified(boolean verified) { this.verified = verified; }
+    // other getters/setters
 }
