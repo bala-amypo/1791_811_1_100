@@ -1,22 +1,14 @@
 package com.example.demo.repository;
 
-import com.example.demo.model.Vendor;
-import com.example.demo.model.VendorDocument;
+import com.example.demo.model.DocumentType;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
-public interface VendorDocumentRepository {
+@Repository
+public interface DocumentTypeRepository extends JpaRepository<DocumentType, Long> {
 
-    default VendorDocument save(VendorDocument vendorDocument) {
-        return vendorDocument;
-    }
-
-    default Optional<VendorDocument> findById(Long id) {
-        return Optional.empty();
-    }
-
-    default List<VendorDocument> findByVendor(Vendor vendor) {
-        return List.of();
-    }
+    // This will return all DocumentType entities where required = true
+    List<DocumentType> findByRequiredTrue();
 }
