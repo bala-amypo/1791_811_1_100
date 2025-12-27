@@ -1,6 +1,11 @@
 package com.example.demo.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "document_types")
@@ -13,15 +18,13 @@ public class DocumentType {
     @Column(nullable = false, unique = true)
     private String name;
 
-    // Constructors
     public DocumentType() {
-    }a
+    }
 
     public DocumentType(String name) {
         this.name = name;
     }
 
-    // Getters & Setters
     public Long getId() {
         return id;
     }
