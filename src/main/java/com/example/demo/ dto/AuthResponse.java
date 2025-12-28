@@ -7,7 +7,6 @@ public class AuthResponse {
     private String email;
     private String role;
 
-    // 🔴 REQUIRED BY TESTS
     public AuthResponse(String token, Long userId, String email, String role) {
         this.token = token;
         this.userId = userId;
@@ -15,19 +14,8 @@ public class AuthResponse {
         this.role = role;
     }
 
-    public String getToken() {
-        return token;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getRole() {
-        return role;
-    }
+    public String getToken() { return token; }
+    public Long getUserId() { return userId; }
+    public String getEmail() { return email; }
+    public String getRole() { return role; }
 }
