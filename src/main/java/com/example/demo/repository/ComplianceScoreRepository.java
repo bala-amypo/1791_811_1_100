@@ -1,21 +1,9 @@
 package com.example.demo.repository;
 
-import com.example.demo.model.ComplianceScore;
-
-import java.util.List;
-import java.util.Optional;
-
-public interface ComplianceScoreRepository {
-
-    default ComplianceScore save(ComplianceScore score) {
-        return score;
-    }
-
-    default Optional<ComplianceScore> findByVendor_Id(Long vendorId) {
-        return Optional.empty();
-    }
-
-    default List<ComplianceScore> findAll() {
-        return List.of();
-    }
+import org.springframework.data.jpa.repository.JpaRepository;
+import java.time.LocalDate;
+import java.util.*;
+import com.example.demo.model.*;
+public interface ComplianceScoreRepository extends JpaRepository<ComplianceScore, Long> {
+    Optional<ComplianceScore> findByVendor_Id(Long vendorId);
 }

@@ -1,5 +1,8 @@
 package com.example.demo.service;
 
+import com.example.demo.model.ComplianceScore;
+
 public interface ComplianceScoreService {
-    void calculateScore();
+    ComplianceScore evaluateVendor(Long vendorId);
+    ComplianceScore getScore(Long vendorId);
 }
