@@ -2,20 +2,21 @@ package com.example.demo.service.impl;
 
 import com.example.demo.model.DocumentType;
 import com.example.demo.repository.DocumentTypeRepository;
+import com.example.demo.service.DocumentTypeService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
-public class DocumentTypeServiceImpl {
 
-    private final DocumentTypeRepository documentTypeRepository;
+public class DocumentTypeServiceImpl implements DocumentTypeService {
 
-    public DocumentTypeServiceImpl(DocumentTypeRepository documentTypeRepository) {
-        this.documentTypeRepository = documentTypeRepository;
+    private final DocumentTypeRepository repository;
+
+    public DocumentTypeServiceImpl(DocumentTypeRepository repository) {
+        this.repository = repository;
     }
 
-    public List<DocumentType> getAllDocumentTypes() {
-        return documentTypeRepository.findAll();
+    @Override
+    public DocumentType save(DocumentType documentType) {
+        return repository.save(documentType);
     }
 }
