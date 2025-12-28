@@ -24,4 +24,3 @@ public class ComplianceScoringEngine {
         return "NON_COMPLIANT";
     }
 }
-\
