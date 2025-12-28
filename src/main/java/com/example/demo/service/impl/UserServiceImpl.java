@@ -20,8 +20,6 @@ public class UserServiceImpl implements UserService {
         if (repo.existsByEmail(u.getEmail())) {
             throw new IllegalArgumentException("Email already used");
         }
-
-        // 🔥 NO ENCODER (security disabled)
         return repo.save(u);
     }
 
