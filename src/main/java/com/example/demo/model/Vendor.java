@@ -1,8 +1,10 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Objects;
 
 @Entity
 @Table(name = "vendors")
@@ -12,8 +14,9 @@ public class Vendor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String name;
+    private String vendorName;
+    private String industry;
+    private LocalDateTime createdAt;
 
     @ManyToMany
     @JoinTable(
@@ -21,36 +24,62 @@ public class Vendor {
         joinColumns = @JoinColumn(name = "vendor_id"),
         inverseJoinColumns = @JoinColumn(name = "document_type_id")
     )
-    private List<DocumentType> supportedDocumentTypes = new ArrayList<>();
+    private Set<DocumentType> supportedDocumentTypes = new HashSet<>();
 
-    public Vendor() {
+    @PrePersist
+    public void prePersist() {
+        createdAt = LocalDateTime.now();
     }
-
-    public Vendor(String name) {
-        this.name = name;
+    
+    // Getters and Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    
+    public String getVendorName() { return vendorName; }
+    public void setVendorName(String vendorName) { this.vendorName = vendorName; }
+    
+    public String getIndustry() { return industry; }
+    public void setIndustry(String industry) { this.industry = industry; }
+    
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    
+    public Set<DocumentType> getSupportedDocumentTypes() { return supportedDocumentTypes; }
+    public void setSupportedDocumentTypes(Set<DocumentType> supportedDocumentTypes) { 
+        this.supportedDocumentTypes = supportedDocumentTypes; 
     }
-
-    public Long getId() {
-        return id;
+    
+    // Proper equals and hashCode
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Vendor vendor = (Vendor) o;
+        
+        // If both have IDs, compare by ID
+        if (id != null && vendor.id != null) {
+            return Objects.equals(id, vendor.id);
+        }
+        
+        // Otherwise, use reference equality for non-persisted objects
+        return super.equals(o);
     }
-
-    public void setId(Long id) {
-        this.id = id;
+    
+    @Override
+    public int hashCode() {
+        if (id != null) {
+            return Objects.hash(id);
+        }
+        // For non-persisted objects, use identity hash code
+        return System.identityHashCode(this);
     }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<DocumentType> getSupportedDocumentTypes() {
-        return supportedDocumentTypes;
-    }
-
-    public void setSupportedDocumentTypes(List<DocumentType> supportedDocumentTypes) {
-        this.supportedDocumentTypes = supportedDocumentTypes;
+    
+    @Override
+    public String toString() {
+        return "Vendor{" +
+               "id=" + id +
+               ", vendorName='" + vendorName + '\'' +
+               ", industry='" + industry + '\'' +
+               '}';
     }
 }

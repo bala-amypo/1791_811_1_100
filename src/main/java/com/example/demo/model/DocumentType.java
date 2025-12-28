@@ -1,11 +1,10 @@
 package com.example.demo.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Objects;
 
 @Entity
 @Table(name = "document_types")
@@ -15,29 +14,76 @@ public class DocumentType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
-    private String name;
+    private int weight;
+    private Boolean required;
+    private LocalDateTime createdAt;
 
-    public DocumentType() {
+    @ManyToMany(mappedBy = "supportedDocumentTypes")
+    private Set<Vendor> vendors = new HashSet<>();
+
+    @PrePersist
+    public void prePersist() {
+        createdAt = LocalDateTime.now();
+        if (weight <= 0) {
+            weight = 1;  // Default weight
+        }
+        if (required == null) {
+            required = false;  // Default required
+        }
     }
-
-    public DocumentType(String name) {
-        this.name = name;
+    
+    // Getters and Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    
+    public int getWeight() { return weight; }
+    public void setWeight(int weight) { this.weight = weight; }
+    
+    public Boolean getRequired() { return required; }
+    public void setRequired(Boolean required) { this.required = required; }
+    
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    
+    public Set<Vendor> getVendors() { return vendors; }
+    public void setVendors(Set<Vendor> vendors) { this.vendors = vendors; }
+    
+    public void addVendor(Vendor vendor) {
+        this.vendors.add(vendor);
+        vendor.getSupportedDocumentTypes().add(this);
     }
-
-    public Long getId() {
-        return id;
+    
+    // Proper equals and hashCode
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DocumentType that = (DocumentType) o;
+        
+        // If both have IDs, compare by ID
+        if (id != null && that.id != null) {
+            return Objects.equals(id, that.id);
+        }
+        
+        // Otherwise, use reference equality for non-persisted objects
+        return super.equals(o);
     }
-
-    public void setId(Long id) {
-        this.id = id;
+    
+    @Override
+    public int hashCode() {
+        if (id != null) {
+            return Objects.hash(id);
+        }
+        // For non-persisted objects, use identity hash code
+        return System.identityHashCode(this);
     }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    
+    @Override
+    public String toString() {
+        return "DocumentType{" +
+               "id=" + id +
+               ", weight=" + weight +
+               ", required=" + required +
+               '}';
     }
 }
